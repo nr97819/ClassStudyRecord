@@ -7,13 +7,12 @@ int CALLBACK WinMain(_In_ HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lp
 {
 	MSG msg;
 
-	CApp app;
-	CApp::CreateMyApp();
-	if (app.Initialize(hInstance, nCmdShow))
+	//CApp app;
+	if (CApp::GetInstance()->Initialize(hInstance, nCmdShow))
 	{
-		msg = app.RunLoop();
+		msg = CApp::GetInstance()->RunLoop();
 	}
-	CApp::DeleteMyApp();
+	CApp::DeleteInstance();
 
 	return (int)msg.wParam;
 }

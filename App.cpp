@@ -9,17 +9,15 @@ CApp::CApp()
 {
 	m_game = new CGame();
 
-	m_whiteBrush = CreateSolidBrush(RGB(255, 255, 255));
-	m_blackBrush = CreateSolidBrush(RGB(0, 0, 0));
-	m_greenBrush = CreateSolidBrush(RGB(0, 255, 0));
-
-	m_bBlackTurn = true;
+	m_greenBrush = CreateSolidBrush(RGB(140, 255, 140));
 }
 
 CApp::~CApp()
 {
 	if(m_game)
 		delete m_game;
+
+	DeleteObject(m_greenBrush);
 }
 
 LRESULT CALLBACK CApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -31,7 +29,6 @@ LRESULT CALLBACK CApp::MyProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 {
 	PAINTSTRUCT ps;
 	HDC hdc;
-
 	switch (message)
 	{
 	case WM_CREATE:
@@ -50,54 +47,7 @@ LRESULT CALLBACK CApp::MyProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 		break;
 
 	case WM_LBUTTONDOWN:
-	{
-		m_game->SetCurrentMousePosX(LOWORD(lParam) - 50);
-		m_game->SetCurrentMousePosY(HIWORD(lParam) - 50);
-
-		bool bValidBlock = true;
-		int cx = 0, cy = 0;
-		if (!ConvertPosToBlock(m_game->GetCurrentMousePos().x, cx)) 
-			bValidBlock = false;
-		if (!ConvertPosToBlock(m_game->GetCurrentMousePos().y, cy)) 
-			bValidBlock = false;
-
-		if (bValidBlock)
-		{
-			int** field = *(m_game->GetField());
-			if (field[cy][cx] == PC_None)
-			{
-				if (m_bBlackTurn)
-				{
-					field[cy][cx] = PC_Black;
-					m_bBlackTurn = false;
-					m_game->IncreaseBlackCount();
-				}
-				else
-				{
-					field[cy][cx] = PC_White;
-					m_bBlackTurn = true;
-					m_game->IncreaseWhiteCount();
-				}
-
-				// @@@@@@@@@@@@@@@@@@@@@@@@ TEST @@@@@@@@@@@@@@@@@@@@@@@@@
-				POINT p;
-				p.y = cy;
-				p.x = cx;
-				m_game->FlipStones(p);
-				// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-				// 턴 체인지
-				if (m_game->GetNowColor() == PC_Black)
-					m_game->SetNowColor(PC_White);
-				else if (m_game->GetNowColor() == PC_White)
-					m_game->SetNowColor(PC_Black);
-			}
-			else { /*이미 놓인 자리 (놓을 수 없는 자리)*/ }
-		}
-
-		InvalidateRgn(hWnd, NULL, TRUE);
-	}
-	break;
+		break;
 
 	/*
 	case WM_LBUTTONUP:
@@ -112,6 +62,35 @@ LRESULT CALLBACK CApp::MyProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 		break;
 	}
 	*/
+
+	case WM_LBUTTONUP:
+	{
+		/*long mouseY = HIWORD(lParam) - 50;
+		long mouseX = LOWORD(lParam) - 50;
+
+		m_game->SetCurrentMousePosY(mouseY);
+		m_game->SetCurrentMousePosX(mouseX);
+
+		if (mouseY < 0 || mouseY >= 400) break;
+		if (mouseX < 0 || mouseX >= 400) break;*/
+
+		if (!m_game->isGameOver())
+		{
+			POINT p;
+			p.y = HIWORD(lParam);
+			p.x = LOWORD(lParam);
+
+			if (m_game->PutStone(p)) // 돌 두기
+			{
+				m_game->isCurrentTurnWin(p);
+				if(!m_game->isGameOver())
+					m_game->ChangeTurn(); // 턴 교체
+			}
+		}
+		
+		InvalidateRgn(hWnd, NULL, TRUE);
+	}
+		break;
 
 	case WM_DESTROY:
 		KillTimer(hWnd, 1);
@@ -154,7 +133,7 @@ bool CApp::Initialize(HINSTANCE hInstance, int nCmdShow)
 		m_szTitle,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		550, 550,
+		650, 650,
 		NULL,
 		NULL,
 		hInstance,
@@ -186,107 +165,73 @@ MSG CApp::RunLoop()
 	return msg;
 }
 
-void CApp::CreateMyApp()
-{
-	if(!m_app)
-		m_app = new CApp();
-}
-
-void CApp::DeleteMyApp()
-{
-	if (m_app)
-	{
-		delete m_app;
-		m_app = nullptr;
-	}
-}
-
 void CApp::OnRender(HDC _hdc)
 {
-	WCHAR text[50] = {};
-	WCHAR winner[30] = {};
+	m_game->Render(_hdc);
 
-	int totalStoneCount = m_game->GetBlackCount() + m_game->GetWhiteCount();
-	if (totalStoneCount == 64)
-	{
-		if (m_game->GetBlackCount() > m_game->GetWhiteCount())
-			swprintf_s(winner, L"Winner! [Black]");
-		else if (m_game->GetBlackCount() < m_game->GetWhiteCount())
-			swprintf_s(winner, L"Winner! [White]");
-		else
-			swprintf_s(winner, L"DRAW...");
-		
-		TextOut(_hdc, 200, 200, winner, wcslen(winner));
-	}
-	else
-	{
-		for (int y = 50; y <= 450; y += 50)
-		{
-			MoveToEx(_hdc, 50, y, NULL);
-			LineTo(_hdc, 450, y);
-		}
+	//WCHAR text[50] = {};
+	//WCHAR winner[30] = {};
 
-		for (int x = 50; x <= 450; x += 50)
-		{
-			MoveToEx(_hdc, x, 50, NULL);
-			LineTo(_hdc, x, 450);
-		}
+	//int totalStoneCount = m_game->GetBlackCount() + m_game->GetWhiteCount();
+	//if (totalStoneCount == 64)
+	//{
+	//	if (m_game->GetBlackCount() > m_game->GetWhiteCount())
+	//		swprintf_s(winner, L"Winner! [Black]");
+	//	else if (m_game->GetBlackCount() < m_game->GetWhiteCount())
+	//		swprintf_s(winner, L"Winner! [White]");
+	//	else
+	//		swprintf_s(winner, L"DRAW...");
+	//	
+	//	TextOut(_hdc, 200, 200, winner, wcslen(winner));
+	//}
+	//else
+	//{
+	//	for (int y = 50; y <= 450; y += 50)
+	//	{
+	//		MoveToEx(_hdc, 50, y, NULL);
+	//		LineTo(_hdc, 450, y);
+	//	}
 
-		int a1 = 75;
-		int delta = 50; // 50이 꽉차는 크기임
-		int** field = *(m_game->GetField());
-		for (int yValue = a1; yValue <= 425; yValue += delta)
-		{
-			for (int xValue = a1; xValue <= 425; xValue += delta)
-			{
-				int cy = (yValue - a1) / 50;
-				int cx = (xValue - a1) / 50;
+	//	for (int x = 50; x <= 450; x += 50)
+	//	{
+	//		MoveToEx(_hdc, x, 50, NULL);
+	//		LineTo(_hdc, x, 450);
+	//	}
 
-				if (field[cy][cx] == PC_Black)
-					DrawCircleAtBlock(_hdc, m_blackBrush, yValue, xValue, delta);
-				else if (field[cy][cx] == PC_White)
-					DrawCircleAtBlock(_hdc, m_whiteBrush, yValue, xValue, delta);
-				else
-					continue;
-			}
-		}
-	}
+	//	int a1 = 75;
+	//	int delta = 50; // 50이 꽉차는 크기임
+	//	int** field = *(m_game->GetField());
+	//	for (int yValue = a1; yValue <= 425; yValue += delta)
+	//	{
+	//		for (int xValue = a1; xValue <= 425; xValue += delta)
+	//		{
+	//			int cy = (yValue - a1) / 50;
+	//			int cx = (xValue - a1) / 50;
 
-	swprintf_s(text, L"CURSOR : ( %d, %d )", m_game->GetCurrentMousePos().x, m_game->GetCurrentMousePos().y);
-	TextOut(_hdc, 0, 0, text, wcslen(text));
+	//			POINT p;
+	//			p.y = cy;
+	//			p.x = cx;
 
-	swprintf_s(text, L"BlackCount : ( %d ) WhiteCount : ( %d)", m_game->GetBlackCount(), m_game->GetWhiteCount());
-	TextOut(_hdc, 0, 16, text, wcslen(text));
+	//			if (field[cy][cx] == PC_Black)
+	//				DrawCircleAtBlock(_hdc, m_blackBrush, yValue, xValue, delta);
+	//			else if (field[cy][cx] == PC_White)
+	//				DrawCircleAtBlock(_hdc, m_whiteBrush, yValue, xValue, delta);				
+	//			else
+	//				continue;
+	//			/*else if (field[cy][cx] == PC_None)
+	//			{
+	//			if (m_game->FlipStones(p))
+	//				DrawCircleAtBlock(_hdc, m_greenBrush, yValue, xValue, delta);
+	//			}*/
+	//		}
+	//	}
+	//}
 
-}
+	//swprintf_s(text, L"CURSOR : ( %d, %d )", m_game->GetCurrentMousePos().x, m_game->GetCurrentMousePos().y);
+	//TextOut(_hdc, 0, 0, text, wcslen(text));
 
-bool CApp::ConvertPosToBlock(long _beforePos, int& _afterBlock)
-{
-	if (_beforePos > 0)
-	{
-		if (_beforePos < 50)
-			_afterBlock = 0;
-		else if (_beforePos < 100)
-			_afterBlock = 1;
-		else if (_beforePos < 150)
-			_afterBlock = 2;
-		else if (_beforePos < 200)
-			_afterBlock = 3;
-		else if (_beforePos < 250)
-			_afterBlock = 4;
-		else if (_beforePos < 300)
-			_afterBlock = 5;
-		else if (_beforePos < 350)
-			_afterBlock = 6;
-		else if (_beforePos < 400)
-			_afterBlock = 7;
-		else
-			return false;
-	}
-	else
-		return false;
-
-	return true;
+	//swprintf_s(text, L"BlackCount : ( %d ) WhiteCount : ( %d)", m_game->GetBlackCount(), m_game->GetWhiteCount());
+	//TextOut(_hdc, 0, 16, text, wcslen(text));
 }
 
 void CApp::DrawCircleAtBlock(HDC _hdc, HBRUSH _brush, int _yValue, int _xValue, int _delta)
@@ -299,3 +244,33 @@ void CApp::DrawCircleAtBlock(HDC _hdc, HBRUSH _brush, int _yValue, int _xValue, 
 		int(_yValue + (float)_delta / 2));
 	SelectObject(_hdc, oldBrush);
 }
+
+//bool CApp::ConvertPosToBlock(long _beforePos, int& _afterBlock)
+//{
+//	if (_beforePos > 0)
+//	{
+//		if (_beforePos < 50)
+//			_afterBlock = 0;
+//		else if (_beforePos < 100)
+//			_afterBlock = 1;
+//		else if (_beforePos < 150)
+//			_afterBlock = 2;
+//		else if (_beforePos < 200)
+//			_afterBlock = 3;
+//		else if (_beforePos < 250)
+//			_afterBlock = 4;
+//		else if (_beforePos < 300)
+//			_afterBlock = 5;
+//		else if (_beforePos < 350)
+//			_afterBlock = 6;
+//		else if (_beforePos < 400)
+//			_afterBlock = 7;
+//		else
+//			return false;
+//	}
+//	else
+//		return false;
+//
+//	return true;
+//}
+
