@@ -74,21 +74,43 @@ LRESULT CALLBACK CApp::MyProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 		if (mouseY < 0 || mouseY >= 400) break;
 		if (mouseX < 0 || mouseX >= 400) break;*/
 
-		if (!m_game->isGameOver())
-		{
-			POINT p;
-			p.y = HIWORD(lParam);
-			p.x = LOWORD(lParam);
+		//if (!m_game->IsGameOver())
+		//{
+		//	POINT p;
+		//	p.y = HIWORD(lParam);
+		//	p.x = LOWORD(lParam);
 
-			if (m_game->PutStone(p)) // 돌 두기
-			{
-				m_game->isCurrentTurnWin(p);
-				if(!m_game->isGameOver())
-					m_game->ChangeTurn(); // 턴 교체
-			}
-		}
+		//	if (m_game->PutStone(p)) // 돌 두기
+		//	{
+		//		m_game->IsCurrentTurnWin(p);
+		//		if(!m_game->IsGameOver())
+		//			m_game->ChangeTurn(); // 턴 교체
+		//	}
+		//}
 		
-		InvalidateRgn(hWnd, NULL, TRUE);
+		POINT p;
+		p.y = HIWORD(lParam);
+		p.x = LOWORD(lParam);
+
+		if (!m_game->GetGameOver())
+		{
+			if (!m_game->PutStone(p)) // 돌 두기
+			{
+				InvalidateRgn(hWnd, NULL, TRUE);
+				break;
+			}
+
+			if (m_game->IsCurrentTurnWin(p))
+			{
+				m_game->SetGameOver(TRUE);
+				InvalidateRgn(hWnd, NULL, TRUE);
+				break;
+			}
+
+			m_game->ChangeTurn(); // 턴 교체
+			InvalidateRgn(hWnd, NULL, TRUE);
+		}
+
 	}
 		break;
 

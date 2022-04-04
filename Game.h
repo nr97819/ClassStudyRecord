@@ -15,6 +15,7 @@ private:
 
 	int m_turn; // Player로 기능하도록 수정
 	int m_bGameOver;
+	int m_bErrorMessage;
 
 	HBRUSH m_stoneBrush[2];
 
@@ -38,7 +39,13 @@ public:
 	int GetTurn() { return m_turn; }
 
 	// New (Omok 코드 추가)
-	void isCurrentTurnWin(POINT& _p); // isCurrentTurnWin()
-	int isGameOver() { return m_bGameOver; }
+	int IsCurrentTurnWin(POINT& _p); // [1] 하나의 돌이 5개 연속인지
+	int GetGameOver() { return m_bGameOver; }
+	void SetGameOver(int _status) { m_bGameOver = TRUE; }
+	
+	int IsDoubleThree(POINT& _p); // [2] 쌍삼인지 여부
+	void EnableErrorMessage() { m_bErrorMessage = TRUE; }
+	void DisableErrorMessage() { m_bErrorMessage = FALSE; }
+	int GetBoolError() { return m_bErrorMessage; }
 };
 

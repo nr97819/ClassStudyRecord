@@ -16,6 +16,7 @@ CGame::CGame()
 
 	m_turn = PC_Black;
 	m_bGameOver = FALSE;
+	m_bErrorMessage = FALSE;
 
 	m_stoneBrush[1] = CreateSolidBrush(RGB(255, 255, 255));
 	m_stoneBrush[0] = CreateSolidBrush(RGB(0, 0, 0));
@@ -33,9 +34,9 @@ int CGame::PutStone(POINT& _p)
 {
 	// 수정해야 함
 	if (_p.x >= 570)
-		_p.x = 570;
+		_p.x = 569;
 	if (_p.y >= 570)
-		_p.y = 570;
+		_p.y = 569;
 	if (_p.x < 0)
 		_p.x = 0;
 	if (_p.y < 0)
@@ -47,155 +48,263 @@ int CGame::PutStone(POINT& _p)
 	if (m_field[cellY][cellX] != PC_None)
 		return FALSE;
 
+	if (IsDoubleThree(_p))
+	{
+		EnableErrorMessage();
+		return FALSE;
+	}
+	else
+	{
+		if (GetBoolError())
+			DisableErrorMessage();
+	}
+
 	m_field[cellY][cellX] = m_turn;
 
 	return TRUE;
 }
 
-void CGame::isCurrentTurnWin(POINT& _p)
+int CGame::IsCurrentTurnWin(POINT& _p)
 {
 	POINT p = {};
 	p.x = _p.x / 30;
 	p.y = _p.y / 30;
 
-	int totalCnt = 0;
-	int cnt = 0;
-	// ====== 수평 ======
-	// X축
-	for (int i = 1; p.x + i < 19; i++)
+	// ============ X 축 ============
+	int x_cnt = 1;
+	for (int i = 1; i < 5; i++)
 	{
-		if (m_field[p.y][p.x + i] == m_turn)
-		{
-			cnt++;
-		}
-		else
-		{
-			totalCnt += cnt;
+		if (m_field[p.y][p.x + i] != m_turn)
 			break;
-		}
 
-		if (cnt >= 4)
-		{
-			m_bGameOver = TRUE;
-			return; // 바로 게임 오버
-		}
+		x_cnt++;
 	}
 
-	cnt = 0;
-	// -X축	
-	for (int i = 1; p.x - i < 19; i++)
+	for (int i = 1; i < 5; i++)
 	{
-		if (m_field[p.y][p.x - i] == m_turn)
-		{
-			cnt++;
-		}
-		else
-		{
-			totalCnt += cnt;
+		if (m_field[p.y][p.x - i] != m_turn)
 			break;
-		}
 
-		if (cnt >= 4)
-		{
-			m_bGameOver = TRUE;
-			return; // 바로 게임 오버
-		}
+		x_cnt++;
 	}
 
-	if (totalCnt >= 4)
-	{
-		m_bGameOver = TRUE;
-		return;
-	}
+	if(x_cnt >= 5)
+		return TRUE;
 
-	totalCnt = 0;
-	// ====== 수직 ======
-	// Y축
-	for (int i = 1; p.y + i < 19; i++)
+	// ============ Y 축 ============
+	int y_cnt = 1;
+	for (int i = 1; i < 5; i++)
 	{
 		if (m_field[p.y + i][p.x] != m_turn)
 			break;
 
-		if (i >= 4)
-		{
-			totalCnt += i; // 누적 (중요)
-			m_bGameOver = TRUE;
-		}
+		y_cnt++;
 	}
 
-	// -Y축
-	for (int i = 1; p.y - i < 19; i++)
+	for (int i = 1; i < 5; i++)
 	{
 		if (m_field[p.y - i][p.x] != m_turn)
 			break;
 
-		if (i >= 4)
-		{
-			totalCnt += i; // 누적 (중요)
-			m_bGameOver = TRUE;
-		}
+		y_cnt++;
 	}
 
-	// ====== 대각선 ====== 
-	// 우측상단
-	for (int i = 1; 
-			p.y + i < 19 && p.x + i < 19; 
-			i++)
+	if (y_cnt >= 5)
+		return TRUE;
+
+	// ============ y=(+)x 축 ============
+	int xy_cnt = 1;
+	for (int i = 1; i < 5; i++)
 	{
 		if (m_field[p.y + i][p.x + i] != m_turn)
 			break;
 
-		if (i >= 4)
-		{
-			totalCnt += i; // 누적 (중요)
-			m_bGameOver = TRUE;
-		}
+		xy_cnt++;
 	}
 
-	// 좌측상단
-	for (int i = 1;
-		p.y + i < 19 && p.x - i < 19;
-		i++)
-	{
-		if (m_field[p.y + i][p.x - i] != m_turn)
-			break;
-
-		if (i >= 4)
-		{
-			totalCnt += i; // 누적 (중요)
-			m_bGameOver = TRUE;
-		}
-	}
-
-	// 좌측하단
-	for (int i = 1;
-		p.y - i < 19 && p.x - i < 19;
-		i++)
+	for (int i = 1; i < 5; i++)
 	{
 		if (m_field[p.y - i][p.x - i] != m_turn)
 			break;
 
-		if (i >= 4)
-		{
-			totalCnt += i; // 누적 (중요)
-			m_bGameOver = TRUE;
-		}
+		xy_cnt++;
 	}
 
-	// 우측하단
-	for (int i = 1;
-		p.y - i < 19 && p.x + i < 19;
-		i++)
+	if (xy_cnt >= 5)
+		return TRUE;
+
+	// ============ y=(-)x 축 ============
+	int yx_cnt = 1;
+	for (int i = 1; i < 5; i++)
+	{
+		if (m_field[p.y + i][p.x - i] != m_turn)
+			break;
+
+		yx_cnt++;
+	}
+
+	for (int i = 1; i < 5; i++)
 	{
 		if (m_field[p.y - i][p.x + i] != m_turn)
 			break;
 
-		if (i >= 4)
-		{
-			totalCnt += i; // 누적 (중요)
-			m_bGameOver = TRUE;
-		}
+		yx_cnt++;
 	}
+
+	if (yx_cnt >= 5)
+		return TRUE;
+	
+	return FALSE;
+}
+
+int CGame::IsDoubleThree(POINT& _p)
+{
+	POINT p = {};
+	p.x = _p.x / 30;
+	p.y = _p.y / 30;
+
+	int enemy = (m_turn % 2) + 1;
+	int doubleThreeCnt = 0;
+
+	// ============ X 축 ============
+	int x_flag = TRUE;
+	int x_cnt = 1;
+	for (int i = 1; i <= 5; i++)
+	{
+		if (m_field[p.y][p.x + i] == PC_None)
+			break;
+		else if (m_field[p.y][p.x + i] == enemy)
+		{
+			x_flag = FALSE;
+			break;
+		}
+
+		x_cnt++;
+	}
+
+	for (int i = 1; i <= 5; i++)
+	{
+		if (m_field[p.y][p.x - i] == PC_None)
+			break;
+		else if (m_field[p.y][p.x - i] == enemy)
+		{
+			x_flag = FALSE;
+			break;
+		}
+
+		x_cnt++;
+	}
+
+	if ((x_cnt == 3) && x_flag)
+		doubleThreeCnt++;
+
+	// ============ Y 축 ============
+	int y_flag = TRUE;
+	int y_cnt = 1;
+	for (int i = 1; i <= 5; i++)
+	{
+		if (m_field[p.y + i][p.x] == PC_None)
+			break;
+		else if (m_field[p.y + i][p.x] == enemy)
+		{
+			y_flag = FALSE;
+			break;
+		}
+
+		y_cnt++;
+	}
+
+	for (int i = 1; i <= 5; i++)
+	{
+		if (m_field[p.y - i][p.x] == PC_None)
+			break;
+		else if (m_field[p.y - i][p.x] == enemy)
+		{
+			y_flag = FALSE;
+			break;
+		}
+
+		y_cnt++;
+	}
+
+	if ((y_cnt == 3) && y_flag)
+		doubleThreeCnt++;
+
+	if (doubleThreeCnt >= 2)
+		return TRUE;
+
+	// ============ y=(+)x 축 ============
+	int xy_flag = TRUE;
+	int xy_cnt = 1;
+	for (int i = 1; i <= 5; i++)
+	{
+		if (m_field[p.y + i][p.x + i] == PC_None)
+			break;
+		else if (m_field[p.y + i][p.x + i] == enemy)
+		{
+			xy_flag = FALSE;
+			break;
+		}
+
+		xy_cnt++;
+	}
+
+	for (int i = 1; i <= 5; i++)
+	{
+		if (m_field[p.y - i][p.x - i] == PC_None)
+			break;
+		else if (m_field[p.y - i][p.x - i] == enemy)
+		{
+			xy_flag = FALSE;
+			break;
+		}
+
+		xy_cnt++;
+	}
+
+	if ((xy_cnt == 3) && xy_flag)
+		doubleThreeCnt++;
+
+	if (doubleThreeCnt >= 2)
+		return TRUE;
+
+	// ============ y=(-)x 축 ============
+	int yx_flag = TRUE;
+	int yx_cnt = 1;
+	for (int i = 1; i <= 5; i++)
+	{
+		if (m_field[p.y + i][p.x - i] == PC_None)
+			break;
+		else if (m_field[p.y + i][p.x - i] == enemy)
+		{
+			yx_flag = FALSE;
+			break;
+		}
+
+		yx_cnt++;
+	}
+
+	for (int i = 1; i <= 5; i++)
+	{
+		if (m_field[p.y - i][p.x + i] == PC_None)
+			break;
+		else if (m_field[p.y - i][p.x + i] == enemy)
+		{
+			yx_flag = FALSE;
+			break;
+		}
+
+		yx_cnt++;
+	}
+
+	if ((yx_cnt == 3) && yx_flag)
+		doubleThreeCnt++;
+
+	if (doubleThreeCnt >= 2)
+		return TRUE;
+
+	// 해당 없을 시, FALSE 반환
+	return FALSE;
 }
 
 void CGame::Render(HDC _hdc)
@@ -203,16 +312,16 @@ void CGame::Render(HDC _hdc)
 	int size = 30;
 	int m = 15;
 
-	for (int x = 0; x <= MAX; x++)
+	for (int x = 0; x < MAX; x++)
 	{
 		MoveToEx(_hdc, x * size + m, m, NULL);
-		LineTo(_hdc, x * size + m, MAX * size + m);
+		LineTo(_hdc, x * size + m, (MAX - 1) * size + m);
 	}
 
-	for (int y = 0; y <= MAX; y++)
+	for (int y = 0; y < MAX; y++)
 	{
 		MoveToEx(_hdc, m, y * size + m, NULL);
-		LineTo(_hdc, MAX * size + m, y * size + m);
+		LineTo(_hdc, (MAX - 1) * size + m, y * size + m);
 	}
 
 	for (int y = 0; y < MAX; y++)
@@ -232,13 +341,19 @@ void CGame::Render(HDC _hdc)
 	{
 		WCHAR winner[30] = {};
 		if (m_turn == PC_Black)
-			swprintf_s(winner, L"Winner! [Black]");
+			swprintf_s(winner, L"검은 돌이 이겼습니다!!");
 		else if (m_turn == PC_White)
-			swprintf_s(winner, L"Winner! [White]");
+			swprintf_s(winner, L"흰 돌이 이겼습니다!!");
 		else
-			swprintf_s(winner, L"DRAW...");
-		
-		TextOut(_hdc, 200, 200, winner, wcslen(winner));
+			swprintf_s(winner, L"error");
+		TextOut(_hdc, 250, 250, winner, wcslen(winner));
+	}
+
+	if (m_bErrorMessage)
+	{
+		WCHAR errorMsg[30] = {};
+		swprintf_s(errorMsg, L"[안내] 쌍삼은 둘 수 없습니다.");
+		TextOut(_hdc, 250, 250, errorMsg, wcslen(errorMsg));
 	}
 
 	//for (int y = 50; y <= 450; y += 50)
