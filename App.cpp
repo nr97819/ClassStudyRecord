@@ -155,7 +155,7 @@ bool CApp::Initialize(HINSTANCE hInstance, int nCmdShow)
 		m_szTitle,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		650, 650,
+		590, 610,
 		NULL,
 		NULL,
 		hInstance,

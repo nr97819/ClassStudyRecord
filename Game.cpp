@@ -171,26 +171,40 @@ int CGame::IsDoubleThree(POINT& _p)
 	int x_cnt = 1;
 	for (int i = 1; i <= 5; i++)
 	{
-		if (m_field[p.y][p.x + i] == PC_None)
-			break;
-		else if (m_field[p.y][p.x + i] == enemy)
+		if (p.x + i >= 19)
 		{
 			x_flag = FALSE;
 			break;
 		}
+
+		if (m_field[p.y][p.x + i] == enemy)
+		{
+			x_flag = FALSE;
+			break;
+		}
+
+		if (m_field[p.y][p.x + i] == PC_None)
+			break;
 
 		x_cnt++;
 	}
 
 	for (int i = 1; i <= 5; i++)
 	{
-		if (m_field[p.y][p.x - i] == PC_None)
-			break;
-		else if (m_field[p.y][p.x - i] == enemy)
+		if (p.x - i < 0)
 		{
 			x_flag = FALSE;
 			break;
 		}
+
+		if (m_field[p.y][p.x - i] == enemy)
+		{
+			x_flag = FALSE;
+			break;
+		}
+
+		if (m_field[p.y][p.x - i] == PC_None)
+			break;
 
 		x_cnt++;
 	}
@@ -203,26 +217,40 @@ int CGame::IsDoubleThree(POINT& _p)
 	int y_cnt = 1;
 	for (int i = 1; i <= 5; i++)
 	{
-		if (m_field[p.y + i][p.x] == PC_None)
-			break;
-		else if (m_field[p.y + i][p.x] == enemy)
+		if (p.y + i >= 19)
 		{
 			y_flag = FALSE;
 			break;
 		}
+		
+		if (m_field[p.y + i][p.x] == enemy)
+		{
+			y_flag = FALSE;
+			break;
+		}
+
+		if (m_field[p.y + i][p.x] == PC_None)
+			break;
 
 		y_cnt++;
 	}
 
 	for (int i = 1; i <= 5; i++)
 	{
-		if (m_field[p.y - i][p.x] == PC_None)
-			break;
-		else if (m_field[p.y - i][p.x] == enemy)
+		if (p.y - i < 0)
 		{
 			y_flag = FALSE;
 			break;
 		}
+		
+		if (m_field[p.y - i][p.x] == enemy)
+		{
+			y_flag = FALSE;
+			break;
+		}
+
+		if (m_field[p.y - i][p.x] == PC_None)
+			break;
 
 		y_cnt++;
 	}
@@ -233,31 +261,45 @@ int CGame::IsDoubleThree(POINT& _p)
 	if (doubleThreeCnt >= 2)
 		return TRUE;
 
-	// ============ y=(+)x 축 ============
+	// ============ y=(+1)x 축 ============
 	int xy_flag = TRUE;
 	int xy_cnt = 1;
 	for (int i = 1; i <= 5; i++)
 	{
-		if (m_field[p.y + i][p.x + i] == PC_None)
-			break;
-		else if (m_field[p.y + i][p.x + i] == enemy)
+		if ((p.y + i >= 19) || (p.x + i >= 19))
 		{
 			xy_flag = FALSE;
 			break;
 		}
+
+		if (m_field[p.y + i][p.x + i] == enemy)
+		{
+			xy_flag = FALSE;
+			break;
+		}
+
+		if (m_field[p.y + i][p.x + i] == PC_None)
+			break;
 
 		xy_cnt++;
 	}
 
 	for (int i = 1; i <= 5; i++)
 	{
-		if (m_field[p.y - i][p.x - i] == PC_None)
-			break;
-		else if (m_field[p.y - i][p.x - i] == enemy)
+		if ((p.y - i < 0) || (p.x - i < 0))
 		{
 			xy_flag = FALSE;
 			break;
 		}
+
+		if (m_field[p.y - i][p.x - i] == enemy)
+		{
+			xy_flag = FALSE;
+			break;
+		}
+
+		if (m_field[p.y - i][p.x - i] == PC_None)
+			break;
 
 		xy_cnt++;
 	}
@@ -268,31 +310,45 @@ int CGame::IsDoubleThree(POINT& _p)
 	if (doubleThreeCnt >= 2)
 		return TRUE;
 
-	// ============ y=(-)x 축 ============
+	// ============ y=(-1)x 축 ============
 	int yx_flag = TRUE;
 	int yx_cnt = 1;
 	for (int i = 1; i <= 5; i++)
 	{
-		if (m_field[p.y + i][p.x - i] == PC_None)
-			break;
-		else if (m_field[p.y + i][p.x - i] == enemy)
+		if ((p.y + i >= 19) || (p.x - i < 0))
 		{
 			yx_flag = FALSE;
 			break;
 		}
+
+		if (m_field[p.y + i][p.x - i] == enemy)
+		{
+			yx_flag = FALSE;
+			break;
+		}
+
+		if (m_field[p.y + i][p.x - i] == PC_None)
+			break;
 
 		yx_cnt++;
 	}
 
 	for (int i = 1; i <= 5; i++)
 	{
-		if (m_field[p.y - i][p.x + i] == PC_None)
-			break;
-		else if (m_field[p.y - i][p.x + i] == enemy)
+		if ((p.y - i < 0) || (p.x + i >= 19))
 		{
 			yx_flag = FALSE;
 			break;
 		}
+		
+		if (m_field[p.y - i][p.x + i] == enemy)
+		{
+			yx_flag = FALSE;
+			break;
+		}
+
+		if (m_field[p.y - i][p.x + i] == PC_None)
+			break;
 
 		yx_cnt++;
 	}
