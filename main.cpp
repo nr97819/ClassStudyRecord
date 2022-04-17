@@ -21,7 +21,9 @@ HBITMAP			hBitmap;
 HDC				hMemDC;
 
 // 추가한 코드
-LPVOID lpDIBits;
+LPDWORD			lpDIBits;
+BYTE*			lpTemp;				// (@) 계속 작업하는 코드	!!!
+int				bitColorTempSize;
 //LPDWORD lpdwDIBits;
 
 // DibSection [2] - File I/O
@@ -103,16 +105,71 @@ void InputBitmapFile(HWND _hWnd, const WCHAR* _filename)
 	//pBitmapInfo->bmiHeader.biWidth = WIDTH;
 	//pBitmapInfo->bmiHeader.biHeight = HEIGHT;
 	pBitmapInfo->bmiHeader.biPlanes = 1;
-	WORD tempBitCount = pBitmapInfo->bmiHeader.biBitCount;
-	pBitmapInfo->bmiHeader.biBitCount = tempBitCount; // 끝의 Alpha에 해당하는 16진수 2자리 제거하고 24비트로?
 	pBitmapInfo->bmiHeader.biCompression = BI_RGB; // BI_BITFIELDS
 	// ====================================
 
 
 	//HBITMAP hBitmap = CreateDIBSection(hdc, pBitmapInfo, DIB_RGB_COLORS, &lpDIBits, NULL, 0);
-	hBitmap = CreateDIBSection(hdc, pBitmapInfo, DIB_RGB_COLORS, &lpDIBits, NULL, 0);
+	hBitmap = CreateDIBSection(hdc, pBitmapInfo, DIB_RGB_COLORS, (void**)&lpDIBits, NULL, 0);
+	hMemDC = CreateCompatibleDC(hdc);
 	ReadFile(hFile, lpDIBits, pBitmapInfo->bmiHeader.biSizeImage, &dwReadBytes, NULL);
 
+
+
+	bitColorTempSize = dwReadBytes;
+
+
+	// ========== [*] 추가된 코드 ==========
+	//memset(lpDIBits, 0xffff0000, dwReadBytes);
+	lpTemp = new BYTE[dwReadBytes];			// BYTE인데 개수 조절안해도 되는 이유 ???
+	int _32BytesCnt = 0;
+	int _24BytesCnt = 0;
+	for (int i = 0; i < (dwReadBytes / 4); i++)
+	{
+		_32BytesCnt++;
+
+
+		//lpTemp[i] = lpDIBits[i];
+		//lpTemp = lpDIBits[0];
+		lpDIBits[0] = 0x12345678; // [VALUE TEST]
+		BYTE r_value = (lpDIBits[i] & 0x00ff0000) >> 16;	// 0x00ff0000	// 나중에 "리틀엔디안" 맞춰서 수정해야 할듯 ???		'A' R G B ? 	B G R 'A' ?
+		BYTE g_value = (lpDIBits[i] & 0x0000ff00) >> 8;		// 0x0000ff00
+		BYTE b_value = (lpDIBits[i] & 0x000000ff);			// 0x000000ff
+
+		BYTE tempValue[3] = {};
+		tempValue[0] = r_value;
+		tempValue[1] = g_value;
+		tempValue[2] = b_value;
+
+		for (int c = 0; c < 3; c++)
+		{
+			lpTemp[(i * 3) + (3 - c - 1)] = tempValue[c];
+
+			_24BytesCnt++;
+		}
+
+		/*BYTE b3Temp[3] = {};
+		b3Temp[0] = r_value;
+		b3Temp[1] = g_value;
+		b3Temp[2] = b_value;
+
+		lpTemp[i] = *b3Temp;*/
+		int a = 1;
+	}
+	
+	//================ [작업중] =====================================================================================
+	// 읽은 bytes 수 동일
+	_32BytesCnt = _32BytesCnt;
+	_24BytesCnt = _24BytesCnt / 3;
+
+	// 끝 지점 동일하게 도달
+	lpDIBits + dwReadBytes;
+	lpTemp + (dwReadBytes / 4) * 3;
+
+
+
+	// 0xff ff ff ff
+	// 1111 1111 1111 1111 1111 1111 1111 1111
 
 	// ========== [*] 추가된 코드 ==========
 	SelectObject(hMemDC, hBitmap);
@@ -156,19 +213,19 @@ void OutputBitmapFile(HWND _hWnd)
 
 void SetNewDib(HWND _hWnd)
 {
-	bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	/*bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
 	bmpInfo.bmiHeader.biWidth = WIDTH;
 	bmpInfo.bmiHeader.biHeight = HEIGHT;
 
 	bmpInfo.bmiHeader.biPlanes = 1;
-	bmpInfo.bmiHeader.biBitCount = 32;
+	bmpInfo.bmiHeader.biBitCount = 24;
 	bmpInfo.bmiHeader.biCompression = BI_RGB;
 
 	HDC hdc = GetDC(_hWnd);
 	hBitmap = CreateDIBSection(hdc, &bmpInfo, DIB_RGB_COLORS, (void**)&lpPixel, NULL, 0);
 	hMemDC = CreateCompatibleDC(hdc);
 	SelectObject(hMemDC, hBitmap);
-	ReleaseDC(_hWnd, hdc);
+	ReleaseDC(_hWnd, hdc);*/
 }
 
 void SetDib(HWND _hWnd)
@@ -362,14 +419,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			nowY = HIWORD(lParam);
 
 			//DrawDib(pX, pY);
-			SetPixel(nowX, nowY, 0xff00ff00);
+			//SetPixel(nowX, nowY, 0xff00ff00);
 			//InvalidateRgn(hWnd, NULL, TRUE);
 		}
 		break;
 
 	case WM_MBUTTONDOWN:
 		//InputBitmapFile(hWnd, L"C:\\__win32api_fileIO_\\SuperMario.bmp");
-		InputBitmapFile(hWnd, L"SuperMario.bmp");
+		InputBitmapFile(hWnd, L"panda.bmp");
 		//InputFile(hWnd, L"C:\\__win32api_fileIO_\\test.txt");
 		//OutputBitmapFile(hWnd);
 		break;
@@ -380,6 +437,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	case WM_LBUTTONUP:
 		bLBtnDown = false;
+		break;
+
+	case WM_RBUTTONDOWN:
+	{
+		LPDWORD lpTemp2 = (LPDWORD)lpTemp;
+		for (int i = 0; i < 70000; i++) // bitColorTempSize
+		{
+			lpDIBits[i] = lpTemp2[i];
+		}
+	}
+		//lpDIBits = (LPDWORD)lpTemp;
 		break;
 
 	case WM_TIMER:
