@@ -1,0 +1,14 @@
+* 2차원 배열 쓰지말고 1차원으로 통일하기
+* 상속을 보여드려야 한다. 
+	-> Proc 상속 구조로 만들기
+	-> TimeManger 구현하기
+* CSprite에 strName이랑 m_id 부여해주기 (구분을 위해)
+
+비트맵 이미지를 불러와서 가지고 있을 HDC를 CBitmap 안에 하나 두고,
+여기서 POINT 범위 지정해서 가져오는 것을 하자.
+(즉, MainDC, MemDC, BitmapDC 총 3개로 하는 것이다.)
+
+
+- 마우스 state 추가해서, (InputProc) LBUTTON_UP에 클릭 이벤트 발생하도록
+- 랜덤으로 조각들을 대기열에 세울 Queue만들기
+- EventProc도 만들기
