@@ -4,7 +4,8 @@
 * 2차원 배열 쓰지말고 1차원으로 통일하기
 * 상속을 보여드려야 한다. 
 	-> Proc 상속 구조로 만들기
-	-> TimeManger 구현하기
+	-> TimeManger 구현하기 (SINGLETON)
+        -> ResourceManger 구현하기 (SINGLETON)
 * CSprite에 strName이랑 m_id 부여해주기 (구분을 위해)
 
 비트맵 이미지를 불러와서 가지고 있을 HDC를 CBitmap 안에 하나 두고,
