@@ -1,5 +1,6 @@
 # m_bitmap (CBitmap)을 CApp -> CGame으로 멤버 변수 위치 바꾸기
 
+[ https://blog.naver.com/imays ] 배현직 : Assembly어 매우 중요하다.
 
 * 2차원 배열 쓰지말고 1차원으로 통일하기
 * 상속을 보여드려야 한다. 
