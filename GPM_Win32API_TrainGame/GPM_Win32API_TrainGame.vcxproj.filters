@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Other">
+      <UniqueIdentifier>{842c3ad9-4b6b-42bc-b697-ad0c45ae16ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project">
+      <UniqueIdentifier>{b274b130-3e05-45ad-8fea-10c193e7b627}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\App">
+      <UniqueIdentifier>{992e1fb7-b297-48e7-b5f1-ea7ca53e3bae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Game">
+      <UniqueIdentifier>{8426f236-64ab-4906-8f5b-b21427245bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Manager">
+      <UniqueIdentifier>{3de38b09-0425-40f7-95fb-84b3dbda0a7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Manager\Input">
+      <UniqueIdentifier>{6064d6ae-0da7-452d-8836-f0d67157ee1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Manager\Time">
+      <UniqueIdentifier>{352a0a7c-2bf2-47b9-af4a-c27e0e5abb37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Manager\Resource">
+      <UniqueIdentifier>{cb1da2fd-039a-407b-b797-50f1c21004e5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GPM_Win32API_TrainGame.cpp">
+      <Filter>Project</Filter>
+    </ClCompile>
+    <ClCompile Include="CGame.cpp">
+      <Filter>Project\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CApp.cpp">
+      <Filter>Project\App</Filter>
+    </ClCompile>
+    <ClCompile Include="CResourceMgr.cpp">
+      <Filter>Project\Manager\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CInputMgr.cpp">
+      <Filter>Project\Manager\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgr.cpp">
+      <Filter>Project\Manager\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileMap.cpp">
+      <Filter>Project\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CSprite.cpp">
+      <Filter>Project\Game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CGame.h">
+      <Filter>Project\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CApp.h">
+      <Filter>Project\App</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="CResourceMgr.h">
+      <Filter>Project\Manager\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CInputMgr.h">
+      <Filter>Project\Manager\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeMgr.h">
+      <Filter>Project\Manager\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="CTileMap.h">
+      <Filter>Project\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CSprite.h">
+      <Filter>Project\Game</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GPM_Win32API_TrainGame.rc">
+      <Filter>Other</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
