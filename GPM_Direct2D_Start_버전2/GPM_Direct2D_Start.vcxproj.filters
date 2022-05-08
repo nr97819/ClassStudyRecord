@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Project">
+      <UniqueIdentifier>{04666a70-ab34-4e89-95ca-f2e9c942d9e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Manager">
+      <UniqueIdentifier>{4c8603ec-ebdb-4b70-9011-cfa51c3a005d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Manager\ResMgr">
+      <UniqueIdentifier>{21b94060-9339-475f-a556-99b93f83479b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Manager\TimeMgr">
+      <UniqueIdentifier>{48156ed0-95ce-4b8a-ab90-be49efe51101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Resource">
+      <UniqueIdentifier>{b03b2dd1-ba7a-40f4-a0de-af1bbefbee75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\App">
+      <UniqueIdentifier>{1bef7593-a49a-4127-be81-3b570b86137b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Animation">
+      <UniqueIdentifier>{5903c0c2-a843-492a-8ce8-8be7af13790c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Manager\AnimMgr">
+      <UniqueIdentifier>{14fd842c-b63e-475e-bef2-258fd00f8095}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GPM_Direct2D_Start.cpp">
+      <Filter>Project</Filter>
+    </ClCompile>
+    <ClCompile Include="CSprite.cpp">
+      <Filter>Project\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CApp.cpp">
+      <Filter>Project\App</Filter>
+    </ClCompile>
+    <ClCompile Include="CResMgr.cpp">
+      <Filter>Project\Manager\ResMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CBitmap.cpp">
+      <Filter>Project\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgr.cpp">
+      <Filter>Project\Manager\TimeMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimMgr.cpp">
+      <Filter>Project\Manager\AnimMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation.cpp">
+      <Filter>Project\Animation</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CSprite.h">
+      <Filter>Project\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CApp.h">
+      <Filter>Project\App</Filter>
+    </ClInclude>
+    <ClInclude Include="CResMgr.h">
+      <Filter>Project\Manager\ResMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CBitmap.h">
+      <Filter>Project\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeMgr.h">
+      <Filter>Project\Manager\TimeMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimMgr.h">
+      <Filter>Project\Manager\AnimMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation.h">
+      <Filter>Project\Animation</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
