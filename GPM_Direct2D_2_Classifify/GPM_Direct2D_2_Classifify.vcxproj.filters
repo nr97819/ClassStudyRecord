@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Project">
+      <UniqueIdentifier>{170ce914-2571-4c28-aee4-4c8167061b85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Engine">
+      <UniqueIdentifier>{998543a2-949a-466c-9925-b7c0c612f54e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Engine\Draw">
+      <UniqueIdentifier>{8d368de4-d0d3-4a54-8ec1-640dba530226}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Engine\Manager">
+      <UniqueIdentifier>{64e87c4a-cc70-4dca-9721-38dd4cbc7a30}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CGameApp.h">
+      <Filter>Project</Filter>
+    </ClInclude>
+    <ClInclude Include="CSprite.h">
+      <Filter>Project\Engine\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimaton.h">
+      <Filter>Project\Engine\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="CBitmap.h">
+      <Filter>Project\Engine\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="CD2DCore.h">
+      <Filter>Project\Engine\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeMgr.h">
+      <Filter>Project\Engine\Manager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GPM_Direct2D_2_Classifify.cpp">
+      <Filter>Project</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameApp.cpp">
+      <Filter>Project</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimaton.cpp">
+      <Filter>Project\Engine\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="CBitmap.cpp">
+      <Filter>Project\Engine\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="CD2DCore.cpp">
+      <Filter>Project\Engine\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="CSprite.cpp">
+      <Filter>Project\Engine\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgr.cpp">
+      <Filter>Project\Engine\Manager</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
