@@ -1,0 +1,59 @@
+
+AWS certified
+Azure certified
+GCP certified
+Docker ceritifed
+K8S certified
+
+Inf -> 쉴더스 어셈블리 강의 (필기해야함) -> 수강 완료하기 (쉴 때, 빠르게 완료하고, DXD12 하기)
+
+======================= [1] =======================
+
+ClassStudyRecord/GPM_Direct2D_2_Classifify/CGameApp.cpp
+
+m_pArrAnims[(UINT)ANIM_INDEX::MIDNIGHT] = new CAnimation();
+m_pArrAnims[(UINT)ANIM_INDEX::MIDNIGHT]->Init(m_pBitmap,
+	4,
+	0.f, 0.f,
+	789.f, 325.f,
+	784.f, 320.f,
+	2, 2,
+	0.1f);
+
+이 부분, CAnimation 객체 안에서 new CAnimation()까지 미리 하고
+반환하도록 해주고, 그걸 CApp가 Create()함수로 받도록 수정
+(delete도 CAnimation 안에서 소멸 관리)
+
+======================= [2] =======================
+
+// Animation
+//m_sprite_sample->Draw(50.f, 50.f, 1.f);
+for (UINT i = 0; i < (UINT)ANIM_INDEX::_LAST_INDEX_; ++i)
+{
+	if(m_pArrAnims[i])
+		m_pArrAnims[i]->Draw(50.f, 50.f, 1.f);
+}
+
+CAnimMgr이 있다면, m_pArrAnims를 반복하는 부분을 CAnimMgr에서 총괄하도록 할 수도 있다... (고려해보기)
+그 외에는, 아주 좋다.
+
+======================= [3] =======================
+
+0. 이 부분에서 -> ClassStudyRecord/GPM_Direct2D_2_Classifify/CSprite.cpp
+renderTarget이 DC랑 비슷한 거니까... 그 때 그 때 받아오는거 말고,
+Draw(_renderTarget)처럼 DC와 같은 방식으로, 멤버 변수로 넘겨줘서 
+처리하는 방식으로 수정하는건 어떤지 고민하기
+
+1. KeyMgr 추가하고, 
+
+2. CAnimMgr 추가하는거 고려해보기
+-> Release도 CAnimMgr가 있으면, for문을 매니저 안으로 넣어서 Release함수 만들고
+쉽게 해제가 가능해질듯...?
+-> 아니면, Anim들을 여럿 가지고 있을 vector나 배열 형태의 AnimGroup를 만들던가... 이것도 괜찮을듯,,,?
+
+3. 캐릭터 (woman) 추가하고, KeyMgr로 캐릭터 이동 구현해보기
+(꼭 클래스 고려해서 코딩하기)
+(클래스 고려하면서 못 만드는 거면, 안 만드는 것이 낫다.)
+
+4. Template(제네릭), 상속 쓸 곳 있을지 찾아보기 (써보는게 좋다.)
+
