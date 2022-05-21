@@ -1,7 +1,6 @@
 #include <iostream>
 using namespace std;
 
-double dJumpTime = 0.;
 double dGravity = -9.8;
 
 #define BOTTOM_Y_POSITION 0
@@ -42,6 +41,7 @@ private:
     double dStartSpeed;
     UINT iActiveMotion;
     UINT iExistJumpCnt;
+    double dJumpTime;
     
 public:
     CPlayer()
@@ -49,6 +49,7 @@ public:
         , dStartSpeed(10.)
         , iActiveMotion(ePlayerState::RUN)
         , iExistJumpCnt(2)
+        , dJumpTime(0.)
     {}
     ~CPlayer()
     {}
@@ -81,6 +82,9 @@ public:
                 
             SetActiveMotion(ePlayerState::JUMP_END)
         }
+        
+        // 꼭 0으로 초기화 해주기
+        dJumpTime = 0.;
     }
     
     void Jump()
