@@ -1,0 +1,7 @@
+DXD3D_12의 구조들을 살펴보면서 느낀 것인데...
+
+*클래스화 할 때,
+- Sprite 클래스에서는 CreateSprite()를 하고, 그렇게 생성된 Sprite를 m_sprite 멤버로 가지고 있도록 하고,
+(추가로, sprite를 여럿 만들어서 sprites로 하고, 해당 sprites의 인덱스를 가질 int index; 같은 것도 넣도록 추천함)
+- sprite나 bitmap 같은 것들이 필요할 때, CSprite나 CBitmap으로부터 GetBitmap()을 하면,
+전에 CreateBitmap()과 같이 호출해서 m_bitmap같은 형태로 가지고 있던 것을 GetBitmap()을 통해 return m_bitmap으로 받아오는 방식이다!!
