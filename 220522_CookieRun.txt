@@ -4,6 +4,8 @@ using namespace std;
 double dJumpTime = 0.;
 double dGravity = -9.8;
 
+#define BOTTOM_Y_POSITION 0
+
 struct Vec2
 {
     float x;
@@ -64,6 +66,21 @@ public:
     void Update()
     {
         std::cout << "CurPos : " << GetPos().x << ", " << GetPos().y << endl;
+        
+        // 점프 후, 지면 도달 시 호출
+        if(GetPos().y <= BOTTOM_Y_POSITION)
+        {
+            if(player.GetActiveMotion() == RUN)
+                return;
+                
+            if(player.GetActiveMotion() == JUMP_END)
+                return;
+                
+            if(player.GetActiveMotion() == SLIDE)
+                return;
+                
+            SetActiveMotion(ePlayerState::JUMP_END)
+        }
     }
     
     void Jump()
