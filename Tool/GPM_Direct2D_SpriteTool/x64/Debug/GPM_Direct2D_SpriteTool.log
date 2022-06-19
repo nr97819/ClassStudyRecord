@@ -1,0 +1,14 @@
+﻿  App.cpp
+C:\__GPM__\소스코드\D2D_StardewValley\Tool\GPM_Direct2D_SpriteTool\D2DCore.h(80,28): warning C4838: 'UINT'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\__GPM__\소스코드\D2D_StardewValley\Tool\GPM_Direct2D_SpriteTool\D2DCore.h(80,37): warning C4838: 'UINT'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+  Bitmap.cpp
+C:\__GPM__\소스코드\D2D_StardewValley\Tool\GPM_Direct2D_SpriteTool\D2DCore.h(80,28): warning C4838: 'UINT'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\__GPM__\소스코드\D2D_StardewValley\Tool\GPM_Direct2D_SpriteTool\D2DCore.h(80,37): warning C4838: 'UINT'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+  D2DCore.cpp
+C:\__GPM__\소스코드\D2D_StardewValley\Tool\GPM_Direct2D_SpriteTool\D2DCore.h(80,28): warning C4838: 'UINT'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\__GPM__\소스코드\D2D_StardewValley\Tool\GPM_Direct2D_SpriteTool\D2DCore.h(80,37): warning C4838: 'UINT'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+  Wnd.cpp
+C:\__GPM__\소스코드\D2D_StardewValley\Tool\GPM_Direct2D_SpriteTool\D2DCore.h(80,28): warning C4838: 'UINT'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\__GPM__\소스코드\D2D_StardewValley\Tool\GPM_Direct2D_SpriteTool\D2DCore.h(80,37): warning C4838: 'UINT'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+  코드를 생성하고 있습니다...
+  GPM_Direct2D_SpriteTool.vcxproj -> C:\__GPM__\소스코드\D2D_StardewValley\Tool\x64\Debug\GPM_Direct2D_SpriteTool.exe

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="소스 파일\Engine">
+      <UniqueIdentifier>{ebd51a43-64bc-44d8-aaa3-6fa004f645e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Main">
+      <UniqueIdentifier>{9207280d-7a1c-4aa4-a6dd-d3803a13d367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\App">
+      <UniqueIdentifier>{6e617407-0fba-4802-a3bc-c1b8fe6b9fbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Engine\Wnd">
+      <UniqueIdentifier>{76239e34-b63d-4e4e-a4e1-142d69cef327}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GPM_Direct2D_SpriteTool.cpp">
+      <Filter>소스 파일\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="D2DCore.cpp">
+      <Filter>소스 파일\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>소스 파일\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>소스 파일\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ImgView.cpp">
+      <Filter>소스 파일\Engine\Wnd</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolView.cpp">
+      <Filter>소스 파일\Engine\Wnd</Filter>
+    </ClCompile>
+    <ClCompile Include="Wnd.cpp">
+      <Filter>소스 파일\Engine\Wnd</Filter>
+    </ClCompile>
+    <ClCompile Include="WICBitmap.cpp">
+      <Filter>소스 파일\Engine</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D2DCore.h">
+      <Filter>소스 파일\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h">
+      <Filter>소스 파일\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitmap.h">
+      <Filter>소스 파일\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h" />
+    <ClInclude Include="ImgView.h">
+      <Filter>소스 파일\Engine\Wnd</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolView.h">
+      <Filter>소스 파일\Engine\Wnd</Filter>
+    </ClInclude>
+    <ClInclude Include="Wnd.h">
+      <Filter>소스 파일\Engine\Wnd</Filter>
+    </ClInclude>
+    <ClInclude Include="WICBitmap.h">
+      <Filter>소스 파일\Engine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GPM_Direct2D_SpriteTool1.rc" />
+  </ItemGroup>
+</Project>
