@@ -1,2 +1,5 @@
-﻿  WICBitmap.cpp
+﻿  ToolView.cpp
+C:\Users\nr978\Downloads\Tool\GPM_Direct2D_SpriteTool\ToolView.cpp(39,14): warning C4244: '초기화 중': 'FLOAT'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\nr978\Downloads\Tool\GPM_Direct2D_SpriteTool\ToolView.cpp(40,15): warning C4244: '초기화 중': 'FLOAT'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\nr978\Downloads\Tool\GPM_Direct2D_SpriteTool\ToolView.cpp(45,16): warning C4244: '초기화 중': 'DWORD'에서 'BYTE'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   GPM_Direct2D_SpriteTool.vcxproj -> C:\Users\nr978\Downloads\Tool\Debug\GPM_Direct2D_SpriteTool.exe

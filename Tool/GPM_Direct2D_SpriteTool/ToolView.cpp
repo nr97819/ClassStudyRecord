@@ -28,8 +28,8 @@ LRESULT CToolView::WndMsgProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM 
 
 	case WM_MOUSEMOVE:
 	{
-		WORD x = HIWORD(_lParam);
-		WORD y = LOWORD(_lParam);
+		WORD x = LOWORD(_lParam);
+		WORD y = HIWORD(_lParam);
 		wchar_t str[100];
 
 		hdc = GetDC(_hWnd);
@@ -39,9 +39,34 @@ LRESULT CToolView::WndMsgProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM 
 		UINT width = m_pMyBitmap->GetD2DBitmap()->GetSize().width;
 		UINT height = m_pMyBitmap->GetD2DBitmap()->GetSize().height;
 
-		DWORD color = m_pMyWICBitmap->GetPixelColor(x, y, width, height);
-		wsprintf(str, L"(%d, %d) COLOR : %8x", x, y, color);
+		DWORD hex_color = m_pMyWICBitmap->GetPixelColor(x, y, width, height);
+		//hex_color = 0x12345678;
+		BYTE a_value = (hex_color & 0xff000000) >> (8 * 3);
+		BYTE r_value = (hex_color & 0x00ff0000) >> (8 * 2);
+		BYTE g_value = (hex_color & 0x0000ff00) >> (8 * 1);
+		BYTE b_value = (hex_color & 0x000000ff) >> (8 * 0);
+		hex_color = (hex_color | b_value) << (8);
+		hex_color = (hex_color | g_value) << (8);
+		hex_color = (hex_color | r_value) << (8);
+		hex_color = (hex_color | a_value);
+
+		wsprintf(str, L"(%.3d, %.3d) COLOR : %.8x", x, y, hex_color);
 		TextOut(hdc, 10, 10, str, wcslen(str));
+
+		HPEN hNewPen = CreatePen(PS_SOLID, 1, RGB(0xff, 0xff, 0xff));
+		HPEN hOldPen = (HPEN)SelectObject(hdc, hNewPen);
+
+		HBRUSH hNewBrush = CreateSolidBrush(RGB(r_value, g_value, b_value));
+		HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hNewBrush);
+
+		POINT rtSize = { 50, 50 };
+		Rectangle(hdc, 900, 20, 900 + rtSize.x, 20 + rtSize.y);
+
+		SelectObject(hdc, hOldPen);
+		SelectObject(hdc, hOldBrush);
+
+		DeleteObject(hNewPen);
+		DeleteObject(hNewBrush);
 
 		ReleaseDC(_hWnd, hdc);
 	}

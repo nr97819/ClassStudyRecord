@@ -170,9 +170,9 @@ void CWnd::Render()
 	pRenderTarget->DrawBitmap(
 		pD2DBitmap,
 		D2D1::RectF(
-			10.f, 10.f,
-			10.f + pD2DBitmap->GetSize().width,
-			10.f + pD2DBitmap->GetSize().height
+			0.f, 0.f,
+			0.f + pD2DBitmap->GetSize().width,
+			0.f + pD2DBitmap->GetSize().height
 		),
 		1.0f, // Alpha °ª
 		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
