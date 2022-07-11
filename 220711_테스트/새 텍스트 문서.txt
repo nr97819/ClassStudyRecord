@@ -1,0 +1,5 @@
+- D2D TextformatFactory ? 그거 써서 글씨 출력하도록 수정
+- 빨간상자 깜빡거리는것 수정
+- D2D rectangle 쓰기 -> 
+
+더블버퍼링은 굳이 X
